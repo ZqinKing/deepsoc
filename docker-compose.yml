@@ -1,0 +1,58 @@
+version: '3.8'
+
+services:
+  mysql:
+    image: mysql:8.0
+    container_name: deepsoc-mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: root_password_change_me
+      MYSQL_DATABASE: deepsoc
+      MYSQL_USER: deepsoc_user
+      MYSQL_PASSWORD: deepsoc_password
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+    command: --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    restart: unless-stopped
+
+  rabbitmq:
+    image: rabbitmq:3-management
+    container_name: deepsoc-rabbitmq
+    environment:
+      RABBITMQ_DEFAULT_USER: guest
+      RABBITMQ_DEFAULT_PASS: guest
+    ports:
+      - "5672:5672"   # AMQP protocol port
+      - "15672:15672" # Management UI port
+    healthcheck:
+      test: ["CMD", "rabbitmq-diagnostics", "-q", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    restart: unless-stopped
+
+  deepsoc:
+    build: .
+    container_name: deepsoc-app
+    ports:
+      - "5007:5007"
+    env_file:
+      - .env
+    depends_on:
+      mysql:
+        condition: service_healthy
+      rabbitmq:
+        condition: service_healthy
+    restart: unless-stopped
+
+    # OctoMation (SOAR) 需要独立部署，请参考: https://github.com/flagify-com/OctoMation
+    # 部署后在 .env (由 docker.env.example 复制而来) 中配置 SOAR_API_URL 和 SOAR_API_TOKEN
+
+volumes:
+  mysql_data:

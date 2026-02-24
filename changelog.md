@@ -2,6 +2,14 @@
 
 ## [未发布]
 
+### Docker容器化支持
+- 为DeepSOC添加了完整的Docker部署方案
+  - 新增 `Dockerfile` 支持构建DeepSOC应用镜像
+  - 新增 `docker-compose.yml` 统一部署MySQL、RabbitMQ和DeepSOC服务
+  - 新增 `docker-entrypoint.sh` 实现数据库自动初始化和多进程（Agent）管理
+  - 新增 `docker.env.example` 提供Docker专用环境变量配置模板
+  - 支持 `docker compose up -d` 一键启动整个开发环境
+
 ## [1.8.3] - 2025-07-07 - 优化README文档&工程师AI助手功能优化
 
 ### 优化README
