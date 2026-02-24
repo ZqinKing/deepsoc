@@ -48,3 +48,5 @@ htmlcov/
 .pytest_cache/
 
 cursor_chat/
+.sisyphus/
+AGENTS.md

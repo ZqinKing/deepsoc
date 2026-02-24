@@ -2,6 +2,9 @@
 
 ## [未发布]
 
+### 新增
+- Docker 容器化部署支持：增加 Dockerfile, docker-compose.yml, 和 entrypoint.sh 脚本，支持使用 Docker 和 Docker Compose 一键拉起完整 DeepSOC 服务（包含 RabbitMQ, MySQL 和多个 Agent 进程）。
+
 ### Docker容器化支持
 - 为DeepSOC添加了完整的Docker部署方案
   - 新增 `Dockerfile` 支持构建DeepSOC应用镜像
